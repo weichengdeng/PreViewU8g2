@@ -1,0 +1,150 @@
+{
+  "name": "u8g2-preview",
+  "displayName": "U8g2 Preview",
+  "description": "在 VS Code 中静态预览 U8g2/GFX 风格绘制",
+  "version": "0.1.0",
+  "publisher": "WeichengDENG",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/weichengdeng/PreViewU8g2.git"
+  },
+  "homepage": "https://github.com/weichengdeng/PreViewU8g2#readme",
+  "bugs": {
+    "url": "https://github.com/weichengdeng/PreViewU8g2/issues"
+  },
+  "author": {
+    "name": "WeichengDENG"
+  },
+  "keywords": [
+    "u8g2",
+    "gfx",
+    "preview",
+    "embedded",
+    "display",
+    "canvas"
+  ],
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onCommand:u8g2Preview.openPreview",
+    "onCommand:u8g2Preview.runExecute"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "u8g2Preview.openPreview",
+        "title": "U8g2: Open Preview"
+      },
+      {
+        "command": "u8g2Preview.runExecute",
+        "title": "U8g2: Run (zig/tcc)"
+      },
+      {
+        "command": "u8g2Preview.fonts.refresh",
+        "title": "U8g2: Refresh Fonts Cache"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "U8g2 Preview",
+      "properties": {
+        "u8g2Preview.width": {
+          "type": "number",
+          "default": 128,
+          "minimum": 8,
+          "description": "显示宽度（像素）"
+        },
+        "u8g2Preview.height": {
+          "type": "number",
+          "default": 64,
+          "minimum": 8,
+          "description": "显示高度（像素）"
+        },
+        "u8g2Preview.scale": {
+          "type": "number",
+          "default": 2,
+          "minimum": 1,
+          "maximum": 16,
+          "description": "画布像素缩放倍数"
+        },
+        "u8g2Preview.invert": {
+          "type": "boolean",
+          "default": false,
+          "description": "黑底白字"
+        },
+        "u8g2Preview.grid": {
+          "type": "boolean",
+          "default": false,
+          "description": "显示像素网格"
+        },
+        "u8g2Preview.sourceGlob": {
+          "type": "string",
+          "default": "**/*.{c,cpp,h,hpp,ino}",
+          "description": "可选：文件系统监听匹配（空则仅监听当前文件）"
+        },
+        "u8g2Preview.font.bdfPath": {
+          "type": "string",
+          "default": "",
+          "description": "BDF 位图字体路径（相对工作区或绝对路径）。如设置，将使用位图字体渲染文本"
+        },
+        "u8g2Preview.font.useDrawColor": {
+          "type": "boolean",
+          "default": true,
+          "description": "文本是否遵循 setDrawColor 颜色（禁用则总用前景色）"
+        },
+        "u8g2Preview.font.autoFetch": {
+          "type": "boolean",
+          "default": true,
+          "description": "自动根据 setFont(u8g2_font_xxx) 拉取对应 BDF 到本地缓存"
+        },
+        "u8g2Preview.font.fetchBaseUrl": {
+          "type": "string",
+          "default": "https://raw.githubusercontent.com/olikraus/u8g2/master/tools/font/bdf",
+          "description": "BDF 拉取基础地址（默认指向 u8g2 仓库 bdf 目录）"
+        },
+        "u8g2Preview.font.cacheLimitMB": {
+          "type": "number",
+          "default": 100,
+          "minimum": 10,
+          "maximum": 2048,
+          "description": "字体缓存上限（MB），超出后旧文件将被清理"
+        },
+        "u8g2Preview.exec.compiler": {
+          "type": "string",
+          "enum": ["zig", "tcc"],
+          "default": "zig",
+          "description": "选择编译器（推荐 zig）"
+        },
+        "u8g2Preview.exec.compilerPath": {
+          "type": "string",
+          "default": "",
+          "description": "编译器可执行文件路径（留空则按 PATH 查找，如 zig/tcc）"
+        },
+        "u8g2Preview.exec.entrySymbol": {
+          "type": "string",
+          "default": "preview_entry",
+          "description": "用户代码中的入口函数名：void preview_entry(Preview& p)"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "echo no-lint-config",
+    "package": "vsce package || echo 'install vsce to package'"
+  },
+  "devDependencies": {
+    "@types/node": "^18.19.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.4.0"
+  }
+}

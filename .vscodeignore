@@ -1,0 +1,9 @@
+out/test/**
+src/**
+.vscode/**
+.git/**
+**/*.map
+**/*.ts
+node_modules/**
+!out/**
+
